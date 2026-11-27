@@ -1,0 +1,500 @@
+<!doctype html><html lang="ru"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><title>Правила игры НОМЕРА</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Roboto+Condensed:wght@600;700&family=Unbounded:wght@600;800&display=swap&subset=cyrillic">
+<style>
+/* Один тёмный мир, как в самой игре: ночь, снег, белая табличка номера как главный акцент.
+   Раскладка: шапка с огромным номером-логотипом, полоса редкостей, блоки «что есть в игре»,
+   правила с оглавлением слева (на телефоне оглавление сверху), таблица наказаний. */
+:root {
+  --bg: #0e0f11;
+  --surface: #17191c;
+  --surface-2: #202327;
+  --line: #31363d;
+  --fg: #ecedef;
+  --muted: #959aa2;
+  --plate: #f2f2ee;
+  --ink: #101113;
+  --coin: #f0be32;
+  --ok: #46be78;
+  --bad: #e85656;
+  --ice: #9fd3ff;
+
+  --r-common: #b4b4b4;
+  --r-uncommon: #5ac85a;
+  --r-rare: #468cff;
+  --r-epic: #aa46ff;
+  --r-legend: #ffbe28;
+  --r-mythic: #ff46aa;
+
+  --font-display: "Unbounded", "Arial Black", system-ui, sans-serif;
+  --font-body: "Onest", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-plate: "Roboto Condensed", "Arial Narrow", "Helvetica Neue", sans-serif;
+
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 72px); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 10; background: var(--bg);
+}
+
+a { color: inherit; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--ice); outline-offset: 3px; border-radius: 6px; }
+
+.wrap {
+  max-width: 1080px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* ---------- шапка ---------- */
+.nav {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.nav .wrap { display: flex; align-items: center; gap: 20px; padding-block: 10px; }
+.nav-links { display: flex; gap: 4px; margin-left: auto; flex-wrap: wrap; }
+.nav-links a {
+  text-decoration: none; color: var(--muted); font-weight: 500; font-size: 14px;
+  padding: 6px 12px; border-radius: 8px;
+}
+.nav-links a:hover { color: var(--fg); background: var(--surface-2); }
+
+/* ---------- табличка номера ---------- */
+.plate {
+  --rar: var(--line);
+  display: inline-flex; align-items: stretch;
+  background: var(--plate); color: var(--ink);
+  border: 2px solid var(--ink); border-radius: 0.32em;
+  box-shadow: 0 0 0 0.12em var(--rar);
+  font-family: var(--font-plate); font-weight: 700; line-height: 1;
+  white-space: nowrap; user-select: none;
+}
+.plate .num { display: flex; align-items: baseline; gap: 0.04em; padding: 0.12em 0.28em 0.1em; }
+.plate .l { font-size: 0.78em; }
+.plate .d { font-size: 1em; letter-spacing: 0.02em; }
+.plate .reg {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border-left: 2px solid var(--ink); padding: 0.06em 0.22em; gap: 0.06em;
+}
+.plate .reg b { font-size: 0.66em; font-weight: 700; }
+.plate .rus { display: flex; align-items: center; gap: 0.12em; font-size: max(0.22em, 8px); font-weight: 700; letter-spacing: 0.04em; }
+.flag { display: inline-grid; grid-template-rows: repeat(3, 1fr); width: 1.6em; height: 1.05em; border: 1px solid #999; }
+.flag i:nth-child(1) { background: #fff; } .flag i:nth-child(2) { background: #1e50c8; } .flag i:nth-child(3) { background: #d72828; }
+
+.plate.logo { font-size: clamp(44px, 11vw, 116px); border-width: 0.05em; box-shadow: 0 18px 60px -20px rgba(159, 211, 255, 0.35); }
+.plate.logo .num { padding: 0.12em 0.32em; font-family: var(--font-display); font-weight: 800; font-size: 0.72em; align-items: center; letter-spacing: 0.01em; }
+.plate.logo .reg { border-left-width: 0.05em; padding: 0.1em 0.2em; }
+.plate.logo .rus { font-size: max(0.17em, 9px); flex-direction: column; gap: 0.25em; }
+.plate.logo .flag { width: 2.4em; height: 1.6em; }
+
+.plate.mythic {
+  box-shadow: none; position: relative; isolation: isolate;
+}
+.plate.mythic::before {
+  content: ""; position: absolute; inset: -0.16em; border-radius: 0.42em; z-index: -1;
+  background: linear-gradient(90deg, #ff4d4d, #ffb84d, #f5ff4d, #4dff88, #4dd2ff, #9a4dff, #ff4dd2, #ff4d4d);
+  background-size: 200% 100%;
+  animation: rainbow 4s linear infinite;
+}
+@keyframes rainbow { to { background-position: 200% 0; } }
+@media (prefers-reduced-motion: reduce) { .plate.mythic::before { animation: none; } }
+
+/* ---------- первый экран ---------- */
+.hero {
+  position: relative; overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  background:
+    radial-gradient(60% 70% at 70% -10%, rgba(90, 160, 255, 0.16), transparent 70%),
+    radial-gradient(50% 60% at 15% -20%, rgba(120, 230, 220, 0.10), transparent 70%),
+    var(--bg);
+}
+.hero .wrap { padding-block: clamp(40px, 8vw, 84px) clamp(36px, 6vw, 64px); display: grid; gap: 28px; justify-items: start; }
+.hero-tag { color: var(--ice); font-weight: 600; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; }
+.hero h1 { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: clamp(22px, 3.2vw, 32px); line-height: 1.25; max-width: 30ch; text-wrap: balance; }
+.hero p { margin: 0; color: var(--muted); max-width: 58ch; font-size: 17px; }
+.cta { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+  font-weight: 700; font-size: 15px; padding: 12px 20px; border-radius: 12px; border: 1px solid transparent;
+}
+.btn.primary { background: var(--plate); color: var(--ink); }
+.btn.primary:hover { background: #fff; }
+.btn.ghost { border-color: var(--line); color: var(--fg); }
+.btn.ghost:hover { background: var(--surface-2); }
+
+.snow { position: absolute; inset: 0; pointer-events: none; }
+.snow i {
+  position: absolute; top: -10px; width: 4px; height: 4px; border-radius: 50%;
+  background: rgba(225, 240, 255, 0.55);
+  animation: fall linear infinite;
+}
+@keyframes fall { to { transform: translateY(var(--fall, 520px)); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .snow { display: none; } }
+
+/* ---------- секции ---------- */
+section { padding-block: clamp(44px, 7vw, 72px); }
+.eyebrow { color: var(--muted); font-weight: 600; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; margin: 0 0 10px; }
+h2 { font-family: var(--font-display); font-weight: 600; font-size: clamp(22px, 3vw, 30px); line-height: 1.2; margin: 0 0 12px; text-wrap: balance; }
+.lead { color: var(--muted); max-width: 62ch; margin: 0; }
+
+/* редкости */
+.rarity-list { margin-top: 28px; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+.rarity {
+  display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 16px;
+  padding: 14px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+}
+.rarity .plate { font-size: 30px; }
+.rarity .meta { min-width: 0; display: grid; gap: 2px; justify-items: end; text-align: right; }
+.rarity .name { font-weight: 700; color: var(--rar); }
+.rarity .chance { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 14px; }
+.note { color: var(--muted); font-size: 14px; margin-top: 14px; }
+
+/* что есть в игре */
+.features { margin-top: 28px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.feature { padding: 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; display: grid; gap: 8px; align-content: start; }
+.feature h3 { margin: 0; font-size: 17px; font-weight: 700; }
+.feature p { margin: 0; color: var(--muted); font-size: 15px; }
+.feature .fact { font-family: var(--font-plate); font-weight: 700; font-size: 26px; color: var(--plate); letter-spacing: 0.01em; }
+.feature .fact small { font-family: var(--font-body); font-size: 13px; font-weight: 500; color: var(--muted); margin-left: 4px; }
+
+/* правила */
+.rules-grid { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 40px; align-items: start; margin-top: 28px; }
+.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 76px); display: grid; gap: 2px; }
+.toc a { text-decoration: none; color: var(--muted); font-size: 14px; padding: 6px 10px; border-radius: 8px; border-left: 2px solid transparent; }
+.toc a:hover { color: var(--fg); background: var(--surface); }
+.toc a.on { color: var(--fg); border-left-color: var(--plate); background: var(--surface); }
+
+.summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-bottom: 36px; }
+.box { padding: 18px 18px 16px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); }
+.box h3 { margin: 0 0 10px; font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.box h3 .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
+.box ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 15px; display: grid; gap: 4px; }
+.box.ok { --c: var(--ok); }
+.box.no { --c: var(--bad); }
+
+.rule { padding-block: 22px; border-top: 1px solid var(--line); }
+.rule:first-of-type { border-top: none; padding-top: 0; }
+.rule h3 { margin: 0 0 12px; font-family: var(--font-display); font-weight: 600; font-size: 19px; display: flex; align-items: baseline; gap: 12px; }
+.rule h3 .n { font-family: var(--font-plate); font-weight: 700; font-size: 15px; color: var(--ink); background: var(--plate); border-radius: 6px; padding: 2px 7px; }
+.rule ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; max-width: 68ch; }
+.rule li { display: grid; grid-template-columns: 2.6em minmax(0, 1fr); gap: 6px; }
+.rule li > span:first-child { color: var(--muted); font-variant-numeric: tabular-nums; font-size: 14px; padding-top: 2px; }
+.rule li ul { margin: 6px 0 0; padding-left: 18px; color: var(--muted); display: grid; gap: 2px; }
+.allow { display: inline-block; font-size: 12px; font-weight: 700; color: var(--ok); border: 1px solid color-mix(in srgb, var(--ok) 50%, transparent); border-radius: 999px; padding: 1px 8px; margin-left: 6px; vertical-align: 2px; }
+.risk {
+  margin: 4px 0 2px; padding: 14px 16px; border-radius: 12px; background: var(--surface);
+  border: 1px solid color-mix(in srgb, var(--coin) 45%, var(--line)); max-width: 68ch;
+}
+.risk b { color: var(--coin); }
+
+/* наказания */
+.table-wrap { overflow-x: auto; margin-top: 24px; border: 1px solid var(--line); border-radius: 14px; }
+table { width: 100%; border-collapse: collapse; min-width: 520px; }
+th, td { text-align: left; padding: 14px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 600; background: var(--surface); }
+tr:last-child td { border-bottom: none; }
+td:first-child { font-weight: 600; width: 46%; }
+.sev { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 10px; background: var(--c); vertical-align: 0; }
+
+footer { border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+footer .wrap { padding-block: 28px 40px; display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; }
+
+@media (max-width: 820px) {
+  .rules-grid { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .toc { position: static; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .toc a { border-left: none; background: var(--surface); }
+  .nav-links a { padding: 6px 8px; font-size: 13px; }
+}
+@media (max-width: 480px) {
+  .nav .plate, .nav-logo { display: none; }
+  .nav-links { margin-left: 0; }
+  .rarity .plate { font-size: 24px; }
+}
+</style>
+</head><body>
+
+
+<nav class="nav" aria-label="Разделы">
+  <div class="wrap">
+    <a href="#top" class="nav-logo" aria-label="Наверх" style="text-decoration:none">
+      <span class="plate" style="font-size:20px"><span class="num" style="font-family:var(--font-display);font-weight:800;font-size:.7em;align-items:center">НОМЕРА</span><span class="reg"><span class="flag"><i></i><i></i><i></i></span></span></span>
+    </a>
+    <div class="nav-links">
+      <a href="#about">Об игре</a>
+      <a href="#rarity">Редкости</a>
+      <a href="#rules">Правила</a>
+      <a href="#punish">Наказания</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="snow" aria-hidden="true" id="snow"></div>
+  <div class="wrap">
+    <span class="hero-tag">Игра в Roblox</span>
+    <span class="plate logo" role="img" aria-label="НОМЕРА RUS">
+      <span class="num">НОМЕРА</span>
+      <span class="reg"><span class="rus">RUS<span class="flag"><i></i><i></i><i></i></span></span></span>
+    </span>
+    <h1>Крути номера, собирай редкие, продавай на рынке и меняйся с игроками</h1>
+    <p>Выбивай российские, дипломатические, военные, украинские, белорусские и калифорнийские номера, собирай машины в автосалоне и ставь на них свои номера. Ниже — что есть в игре и правила для всех игроков.</p>
+    <div class="cta">
+      <a class="btn primary" href="https://www.roblox.com/games/83531579542191" target="_blank" rel="noopener">Играть в Roblox</a>
+      <a class="btn ghost" href="#rules">Читать правила</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="about">
+    <div class="wrap">
+      <p class="eyebrow">Об игре</p>
+      <h2>Что тебя ждёт</h2>
+      <p class="lead">Всё строится вокруг номеров: крутишь, оцениваешь комбинацию, решаешь — оставить, продать боту, выставить на рынок или обменять.</p>
+      <div class="features">
+        <div class="feature">
+          <span class="fact">6<small>редкостей номеров</small></span>
+          <h3>Номера</h3>
+          <p>Гражданские, дипломатические, МВД, военные, Украина, Беларусь и Калифорния. Цена зависит от редкости, региона и красоты комбинации.</p>
+        </div>
+        <div class="feature">
+          <span class="fact">9<small>машин</small></span>
+          <h3>Автомобили</h3>
+          <p>От Lada Vesta до Lamborghini Huracán. Крути машины или покупай в автосалоне, крась, ставь подвеску, тонировку и свои номера.</p>
+        </div>
+        <div class="feature">
+          <span class="fact">5%<small>комиссия рынка</small></span>
+          <h3>Рынок и трейды</h3>
+          <p>Выставляй номера и машины на общий рынок для всех серверов или меняйся с игроками напрямую.</p>
+        </div>
+        <div class="feature">
+          <span class="fact">25<small>круток в дуэли</small></span>
+          <h3>Мини-игры и дуэли</h3>
+          <p>Вызови игрока на дуэль: у кого номера дороже, тот забирает всё. Плюс птичка, апгрейдер и контракты.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="rarity" style="background:var(--surface-2);border-block:1px solid var(--line)">
+    <div class="wrap">
+      <p class="eyebrow">Редкости</p>
+      <h2>Шанс выбить номер</h2>
+      <p class="lead">Базовый шанс одной гражданской крутки. Удача, VIP и бусты его повышают.</p>
+      <div class="rarity-list">
+        <div class="rarity" style="--rar:var(--r-common)">
+          <span class="plate" style="--rar:var(--r-common)"><span class="num"><span class="l">А</span><span class="d">123</span><span class="l">ВС</span></span><span class="reg"><b>77</b><span class="rus">RUS<span class="flag"><i></i><i></i><i></i></span></span></span></span>
+          <span class="meta"><span class="name">Обычный</span><span class="chance">≈ 70%</span></span>
+        </div>
+        <div class="rarity" style="--rar:var(--r-uncommon)">
+          <span class="plate" style="--rar:var(--r-uncommon)"><span class="num"><span class="l">К</span><span class="d">345</span><span class="l">МР</span></span><span class="reg"><b>50</b><span class="rus">RUS<span class="flag"><i></i><i></i><i></i></span></span></span></span>
+          <span class="meta"><span class="name">Необычный</span><span class="chance">≈ 20%</span></span>
+        </div>
+        <div class="rarity" style="--rar:var(--r-rare)">
+          <span class="plate" style="--rar:var(--r-rare)"><span class="num"><span class="l">Х</span><span class="d">666</span><span class="l">ХХ</span></span><span class="reg"><b>50</b><span class="rus">RUS<span class="flag"><i></i><i></i><i></i></span></span></span></span>
+          <span class="meta"><span class="name">Редкий</span><span class="chance">≈ 8%</span></span>
+        </div>
+        <div class="rarity" style="--rar:var(--r-epic)">
+          <span class="plate" style="--rar:var(--r-epic)"><span class="num"><span class="l">Р</span><span class="d">555</span><span class="l">ХО</span></span><span class="reg"><b>199</b><span class="rus">RUS<span class="flag"><i></i><i></i><i></i></span></span></span></span>
+          <span class="meta"><span class="name">Эпический</span><span class="chance">≈ 1,8%</span></span>
+        </div>
+        <div class="rarity" style="--rar:var(--r-legend)">
+          <span class="plate" style="--rar:var(--r-legend)"><span class="num"><span class="l">В</span><span class="d">007</span><span class="l">ВВ</span></span><span class="reg"><b>97</b><span class="rus">RUS<span class="flag"><i></i><i></i><i></i></span></span></span></span>
+          <span class="meta"><span class="name">Легендарный</span><span class="chance">≈ 0,2%</span></span>
+        </div>
+        <div class="rarity" style="--rar:var(--r-mythic)">
+          <span class="plate mythic"><span class="num"><span class="l">В</span><span class="d">777</span><span class="l">ОР</span></span><span class="reg"><b>777</b><span class="rus">RUS<span class="flag"><i></i><i></i><i></i></span></span></span></span>
+          <span class="meta"><span class="name">Мифический</span><span class="chance">≈ 0,01%</span></span>
+        </div>
+      </div>
+      <p class="note">Мифических номеров всего пять на всю игру: В777ОР 777, Х777АМ 777, Х777ЕР 777, А777МР 777 и К067ЕК 67. Каждый можно выбить только один раз на всех серверах.</p>
+    </div>
+  </section>
+
+  <section id="rules">
+    <div class="wrap">
+      <p class="eyebrow">Правила</p>
+      <h2>Правила игры</h2>
+      <p class="lead">Играя, ты соглашаешься с этими правилами и с <a href="https://en.help.roblox.com/hc/articles/203313410" target="_blank" rel="noopener">Правилами сообщества Roblox</a>. Незнание правил не освобождает от наказания.</p>
+
+      <div class="rules-grid">
+        <aside class="toc" aria-label="Разделы правил" id="toc">
+          <a href="#r1">1. Общение</a>
+          <a href="#r2">2. Трейды и рынок</a>
+          <a href="#r3">3. Дуэли и мини-игры</a>
+          <a href="#r4">4. Честная игра</a>
+          <a href="#r5">5. Редкие номера</a>
+          <a href="#r6">6. Аккаунт</a>
+          <a href="#punish">7. Наказания</a>
+          <a href="#r8">8. Администрация</a>
+        </aside>
+
+        <div>
+          <div class="summary">
+            <div class="box ok">
+              <h3><span class="dot"></span>Можно</h3>
+              <ul>
+                <li>Пользоваться автокликером</li>
+                <li>Торговаться и меняться как хочешь — сделки на твой риск</li>
+                <li>Сообщать о багах и получать за это награду</li>
+              </ul>
+            </div>
+            <div class="box no">
+              <h3><span class="dot"></span>Нельзя</h3>
+              <ul>
+                <li>Читы, эксплойты и использование багов</li>
+                <li>Продажа номеров, машин и аккаунтов за реальные деньги</li>
+                <li>Оскорбления, спам и выдача себя за админа</li>
+              </ul>
+            </div>
+          </div>
+
+          <article class="rule" id="r1">
+            <h3><span class="n">1</span>Общение</h3>
+            <ol>
+              <li><span>1.1</span><span>Уважай других игроков. Оскорбления, травля, угрозы и дискриминация запрещены.</span></li>
+              <li><span>1.2</span><span>Нельзя спамить и флудить в чате, в личных сообщениях и в приглашениях на трейд или дуэль.</span></li>
+              <li><span>1.3</span><span>Нельзя рекламировать другие игры, сайты, Discord-серверы и сторонние магазины.</span></li>
+              <li><span>1.4</span><span>Нельзя выдавать себя за администратора, разработчика или модератора.</span></li>
+              <li><span>1.5</span><span>Нельзя просить и публиковать чужие личные данные, пароли и коды.</span></li>
+            </ol>
+          </article>
+
+          <article class="rule" id="r2">
+            <h3><span class="n">2</span>Трейды и рынок</h3>
+            <ol>
+              <li><span>2.1</span><div><div class="risk"><b>Каждый трейд — на твой страх и риск.</b> Администрация не вмешивается в сделки между игроками, не возвращает отданные номера, машины и монеты и не наказывает за невыгодный или нечестный обмен.</div></div></li>
+              <li><span>2.2</span><span>Устные договорённости ничего не гарантируют. Учитывается только то, что прошло через окно трейда или рынок. Перед подтверждением всегда проверяй, что именно ты отдаёшь и получаешь.</span></li>
+              <li><span>2.3</span><span>Нельзя продавать и покупать номера, машины, монеты и аккаунты за реальные деньги, Robux вне игры или другие ценности.</span></li>
+              <li><span>2.4</span><span>Сделки, которые прошли через рынок или трейд, не отменяются. Исключение — ошибка самой игры.</span></li>
+            </ol>
+          </article>
+
+          <article class="rule" id="r3">
+            <h3><span class="n">3</span>Дуэли и мини-игры</h3>
+            <ol>
+              <li><span>3.1</span><span>Нельзя договариваться о подставных дуэлях ради передачи номеров в обход трейда.</span></li>
+              <li><span>3.2</span><span>Автокликер разрешён.<span class="allow">можно</span></span></li>
+            </ol>
+          </article>
+
+          <article class="rule" id="r4">
+            <h3><span class="n">4</span>Честная игра</h3>
+            <ol>
+              <li><span>4.1</span><span>Запрещены читы, эксплойты, сторонние программы, которые меняют клиент игры, и любое вмешательство в работу игры. Автокликер к ним не относится.</span></li>
+              <li><span>4.2</span><div>Нашёл баг — сообщи администрации и не пользуйся им. Например:
+                <ul><li>дублирование номеров;</li><li>бесплатные крутки;</li><li>лишние монеты.</li></ul>
+                Тот, кто пользуется багом, получает наказание. Тот, кто о нём сообщил, может получить награду.</div></li>
+              <li><span>4.3</span><span>Нельзя использовать твинк-аккаунты, чтобы фармить награды, промокоды, ежедневные бонусы или передавать ценности на основной аккаунт.</span></li>
+              <li><span>4.4</span><span>Промокод можно активировать только на одном своём аккаунте. Нельзя продавать промокоды и раздавать их вне официальных каналов.</span></li>
+            </ol>
+          </article>
+
+          <article class="rule" id="r5">
+            <h3><span class="n">5</span>Редкие и мифические номера</h3>
+            <ol>
+              <li><span>5.1</span><span>Мифических номеров в игре всего пять, и каждый существует в одном экземпляре.</span></li>
+              <li><span>5.2</span><span>Номер, полученный через баг, изымается без компенсации.</span></li>
+            </ol>
+          </article>
+
+          <article class="rule" id="r6">
+            <h3><span class="n">6</span>Аккаунт</h3>
+            <ol>
+              <li><span>6.1</span><span>За безопасность аккаунта отвечаешь ты сам. Номера, машины и монеты, потерянные после взлома или передачи аккаунта, не восстанавливаются.</span></li>
+              <li><span>6.2</span><span>Никому не сообщай пароль и коды подтверждения. Администрация никогда их не спрашивает.</span></li>
+            </ol>
+          </article>
+
+          <article class="rule" id="punish">
+            <h3><span class="n">7</span>Наказания</h3>
+            <p class="lead" style="font-size:15px">Наказание выбирается по тяжести нарушения. При повторных нарушениях оно строже.</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Нарушение</th><th>Наказание</th></tr></thead>
+                <tbody>
+                  <tr><td><span class="sev" style="--c:var(--r-legend)"></span>Спам, лёгкие оскорбления</td><td>Предупреждение, затем мут в чате</td></tr>
+                  <tr><td><span class="sev" style="--c:var(--r-legend)"></span>Реклама, выдача себя за админа</td><td>Мут или временный бан</td></tr>
+                  <tr><td><span class="sev" style="--c:var(--bad)"></span>Травля, угрозы, публикация чужих личных данных</td><td>Временный или вечный бан</td></tr>
+                  <tr><td><span class="sev" style="--c:var(--bad)"></span>Использование бага</td><td>Изъятие нажитого через баг, временный или вечный бан</td></tr>
+                  <tr><td><span class="sev" style="--c:var(--bad)"></span>Твинки, злоупотребление промокодами, подставные дуэли</td><td>Изъятие полученного, временный или вечный бан</td></tr>
+                  <tr><td><span class="sev" style="--c:var(--bad)"></span>Читы, эксплойты, продажа за реальные деньги</td><td>Вечный бан и обнуление прогресса</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <article class="rule" id="r8">
+            <h3><span class="n">8</span>Администрация</h3>
+            <ol>
+              <li><span>8.1</span><span>Администрация может изменять правила, цены, шансы выпадения и баланс игры. Изменения действуют с момента публикации.</span></li>
+              <li><span>8.2</span><span>Решения администрации обязательны. Оспорить наказание можно, если спокойно и с доказательствами (скриншоты, видео) написать в официальную группу игры.</span></li>
+              <li><span>8.3</span><span>Ситуации, не описанные в правилах, администрация решает сама, исходя из честной игры.</span></li>
+            </ol>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>НОМЕРА · игра в Roblox</span>
+    <span>Правила обновлены 24 ноября 2026</span>
+  </div>
+</footer>
+
+<script>
+// Лёгкий снег в шапке (как в самой игре); без анимации, если пользователь её отключил
+(function () {
+  var box = document.getElementById("snow");
+  if (!box || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  function setFall() { box.style.setProperty("--fall", (box.offsetHeight + 20) + "px"); }
+  setFall();
+  window.addEventListener("resize", setFall);
+  for (var i = 0; i < 36; i++) {
+    var f = document.createElement("i");
+    var s = 2 + Math.random() * 4;
+    f.style.left = (Math.random() * 100) + "%";
+    f.style.width = f.style.height = s + "px";
+    f.style.opacity = (0.25 + Math.random() * 0.5).toFixed(2);
+    f.style.animationDuration = (7 + Math.random() * 9) + "s";
+    f.style.animationDelay = (-Math.random() * 14) + "s";
+    box.appendChild(f);
+  }
+})();
+
+// Подсветка текущего раздела в оглавлении правил
+(function () {
+  var links = Array.prototype.slice.call(document.querySelectorAll("#toc a"));
+  var targets = links.map(function (a) { return document.querySelector(a.getAttribute("href")); });
+  if (!("IntersectionObserver" in window)) return;
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      links.forEach(function (a, i) { a.classList.toggle("on", targets[i] === e.target); });
+    });
+  }, { rootMargin: "-40% 0px -55% 0px" });
+  targets.forEach(function (t) { if (t) io.observe(t); });
+})();
+</script>
+
+</body></html>
