@@ -1,499 +1,294 @@
-<!doctype html><html lang="ru"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><title>Правила игры НОМЕРА</title>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Правила Подольск RP</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Roboto+Condensed:wght@600;700&family=Unbounded:wght@600;800&display=swap&subset=cyrillic">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800;900&family=Inter:wght@400;500;600&display=swap">
 <style>
-/* Один тёмный мир, как в самой игре: ночь, снег, белая табличка номера как главный акцент.
-   Раскладка: шапка с огромным номером-логотипом, полоса редкостей, блоки «что есть в игре»,
-   правила с оглавлением слева (на телефоне оглавление сверху), таблица наказаний. */
+/* Layout: one reading column; sticky chip nav of sections; each section = header + one panel of numbered rules with penalty pills (same look as the in-game window) */
 :root {
-  --bg: #0e0f11;
-  --surface: #17191c;
-  --surface-2: #202327;
-  --line: #31363d;
-  --fg: #ecedef;
-  --muted: #959aa2;
-  --plate: #f2f2ee;
-  --ink: #101113;
-  --coin: #f0be32;
-  --ok: #46be78;
-  --bad: #e85656;
-  --ice: #9fd3ff;
-
-  --r-common: #b4b4b4;
-  --r-uncommon: #5ac85a;
-  --r-rare: #468cff;
-  --r-epic: #aa46ff;
-  --r-legend: #ffbe28;
-  --r-mythic: #ff46aa;
-
-  --font-display: "Unbounded", "Arial Black", system-ui, sans-serif;
-  --font-body: "Onest", "Segoe UI", system-ui, -apple-system, sans-serif;
-  --font-plate: "Roboto Condensed", "Arial Narrow", "Helvetica Neue", sans-serif;
-
+  --bg: #0f1218;
+  --panel: #1a1f28;
+  --panel-2: #242a35;
+  --line: #2c3340;
+  --fg: #eef1f6;
+  --muted: #9aa3b2;
+  --dim: #6b7484;
+  --accent: #f2f4f8;
+  --accent-fg: #11141a;
+  --pun: #f0645a;
+  --pun-bg: rgba(240, 100, 90, .12);
+  --mark: rgba(255, 214, 102, .35);
+  --display: "Montserrat", "Segoe UI", Arial, sans-serif;
+  --body: "Inter", "Segoe UI", Arial, sans-serif;
   color-scheme: dark;
 }
-
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 72px); }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
-
-body {
-  background: var(--bg);
-  color: var(--fg);
-  font-family: var(--font-body);
-  font-size: 16px;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #eef1f5; --panel: #ffffff; --panel-2: #e6eaf0; --line: #dde2ea;
+    --fg: #141821; --muted: #5a6272; --dim: #8a93a3; --accent: #141821; --accent-fg: #ffffff;
+    --pun: #c9392f; --pun-bg: rgba(201, 57, 47, .09); --mark: rgba(255, 196, 0, .35);
+    color-scheme: light;
+  }
 }
-body::before {
-  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
-  z-index: 10; background: var(--bg);
+:root[data-theme="light"] {
+  --bg: #eef1f5; --panel: #ffffff; --panel-2: #e6eaf0; --line: #dde2ea;
+  --fg: #141821; --muted: #5a6272; --dim: #8a93a3; --accent: #141821; --accent-fg: #ffffff;
+  --pun: #c9392f; --pun-bg: rgba(201, 57, 47, .09); --mark: rgba(255, 196, 0, .35);
+  color-scheme: light;
 }
 
-a { color: inherit; }
-a:focus-visible, button:focus-visible { outline: 2px solid var(--ice); outline-offset: 3px; border-radius: 6px; }
+body { background: var(--bg); color: var(--fg); font: 15px/1.55 var(--body); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.wrap { max-width: 860px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 40px 64px; display: grid; gap: 28px; }
 
-.wrap {
-  max-width: 1080px; margin: 0 auto;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
+header.top { display: grid; gap: 14px; }
+.brand { font: 900 13px/1 var(--display); letter-spacing: .32em; text-transform: uppercase; color: var(--muted); }
+.brand b { color: var(--fg); letter-spacing: .12em; font-size: 22px; display: block; margin-bottom: 6px; }
+h1 { font: 800 clamp(30px, 6vw, 44px)/1.08 var(--display); margin: 0; text-wrap: balance; }
+.intro { margin: 0; color: var(--muted); max-width: 65ch; }
+.meta { display: flex; flex-wrap: wrap; gap: 8px; }
+.tag { font: 600 12px/1 var(--body); padding: 8px 12px; border-radius: 999px; background: var(--panel-2); color: var(--muted); }
+
+nav.chips { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); padding-block: 10px; display: grid; gap: 10px; border-bottom: 1px solid var(--line); }
+.chiprow { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+.chiprow::-webkit-scrollbar { display: none; }
+.chip { flex: none; font: 700 13px/1 var(--display); color: var(--fg); background: var(--panel); border: 0; border-radius: 999px; padding: 11px 16px; text-decoration: none; }
+.chip:hover { background: var(--panel-2); }
+.chip.on { background: var(--accent); color: var(--accent-fg); }
+.chip:focus-visible, .search:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+.search { width: 100%; box-sizing: border-box; font: 500 15px var(--body); color: var(--fg); background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 12px 18px; }
+.search::placeholder { color: var(--dim); }
+.empty { color: var(--muted); text-align: center; padding: 24px 0; }
+
+section { display: grid; gap: 12px; scroll-margin-top: 130px; }
+section h2 { font: 800 13px/1.2 var(--display); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin: 0; padding-left: 6px; }
+section h2 small { font: 500 12px var(--body); text-transform: none; letter-spacing: 0; color: var(--dim); margin-left: 8px; }
+.panel { background: var(--panel); border-radius: 22px; padding: 6px 22px; }
+.rule { display: grid; grid-template-columns: 3.2em minmax(0, 1fr); gap: 4px 12px; padding: 14px 0; border-top: 1px solid var(--line); }
+.rule:first-child { border-top: 0; }
+.num { font: 800 14px/1.55 var(--display); color: var(--fg); font-variant-numeric: tabular-nums; }
+.txt { min-width: 0; }
+.pun { grid-column: 2; justify-self: start; font: 600 12.5px/1.3 var(--body); color: var(--pun); background: var(--pun-bg); border-radius: 999px; padding: 5px 11px; }
+.terms .rule { grid-template-columns: 7.5em minmax(0, 1fr); }
+.terms .num { font-size: 13px; }
+mark { background: var(--mark); color: inherit; border-radius: 3px; }
+
+.legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.legend div { background: var(--panel); border-radius: 16px; padding: 14px 16px; }
+.legend b { font: 800 13px var(--display); display: block; margin-bottom: 4px; }
+.legend span { color: var(--muted); font-size: 13.5px; }
+footer { color: var(--dim); font-size: 13px; text-align: center; }
+
+@media (max-width: 520px) {
+  .wrap { padding-block: 24px 48px; }
+  .panel { padding: 4px 16px; border-radius: 18px; }
+  .rule, .terms .rule { grid-template-columns: minmax(0, 1fr); }
+  .pun { grid-column: 1; }
+  section { scroll-margin-top: 120px; }
 }
-
-/* ---------- шапка ---------- */
-.nav {
-  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9;
-  background: color-mix(in srgb, var(--bg) 88%, transparent);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--line);
-}
-.nav .wrap { display: flex; align-items: center; gap: 20px; padding-block: 10px; }
-.nav-links { display: flex; gap: 4px; margin-left: auto; flex-wrap: wrap; }
-.nav-links a {
-  text-decoration: none; color: var(--muted); font-weight: 500; font-size: 14px;
-  padding: 6px 12px; border-radius: 8px;
-}
-.nav-links a:hover { color: var(--fg); background: var(--surface-2); }
-
-/* ---------- табличка номера ---------- */
-.plate {
-  --rar: var(--line);
-  display: inline-flex; align-items: stretch;
-  background: var(--plate); color: var(--ink);
-  border: 2px solid var(--ink); border-radius: 0.32em;
-  box-shadow: 0 0 0 0.12em var(--rar);
-  font-family: var(--font-plate); font-weight: 700; line-height: 1;
-  white-space: nowrap; user-select: none;
-}
-.plate .num { display: flex; align-items: baseline; gap: 0.04em; padding: 0.12em 0.28em 0.1em; }
-.plate .l { font-size: 0.78em; }
-.plate .d { font-size: 1em; letter-spacing: 0.02em; }
-.plate .reg {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  border-left: 2px solid var(--ink); padding: 0.06em 0.22em; gap: 0.06em;
-}
-.plate .reg b { font-size: 0.66em; font-weight: 700; }
-.plate .rus { display: flex; align-items: center; gap: 0.12em; font-size: max(0.22em, 8px); font-weight: 700; letter-spacing: 0.04em; }
-.flag { display: inline-grid; grid-template-rows: repeat(3, 1fr); width: 1.6em; height: 1.05em; border: 1px solid #999; }
-.flag i:nth-child(1) { background: #fff; } .flag i:nth-child(2) { background: #1e50c8; } .flag i:nth-child(3) { background: #d72828; }
-
-.plate.logo { font-size: clamp(44px, 11vw, 116px); border-width: 0.05em; box-shadow: 0 18px 60px -20px rgba(159, 211, 255, 0.35); }
-.plate.logo .num { padding: 0.12em 0.32em; font-family: var(--font-display); font-weight: 800; font-size: 0.72em; align-items: center; letter-spacing: 0.01em; }
-.plate.logo .reg { border-left-width: 0.05em; padding: 0.1em 0.2em; }
-.plate.logo .rus { font-size: max(0.17em, 9px); flex-direction: column; gap: 0.25em; }
-.plate.logo .flag { width: 2.4em; height: 1.6em; }
-
-.plate.mythic {
-  box-shadow: none; position: relative; isolation: isolate;
-}
-.plate.mythic::before {
-  content: ""; position: absolute; inset: -0.16em; border-radius: 0.42em; z-index: -1;
-  background: linear-gradient(90deg, #ff4d4d, #ffb84d, #f5ff4d, #4dff88, #4dd2ff, #9a4dff, #ff4dd2, #ff4d4d);
-  background-size: 200% 100%;
-  animation: rainbow 4s linear infinite;
-}
-@keyframes rainbow { to { background-position: 200% 0; } }
-@media (prefers-reduced-motion: reduce) { .plate.mythic::before { animation: none; } }
-
-/* ---------- первый экран ---------- */
-.hero {
-  position: relative; overflow: hidden;
-  border-bottom: 1px solid var(--line);
-  background:
-    radial-gradient(60% 70% at 70% -10%, rgba(90, 160, 255, 0.16), transparent 70%),
-    radial-gradient(50% 60% at 15% -20%, rgba(120, 230, 220, 0.10), transparent 70%),
-    var(--bg);
-}
-.hero .wrap { padding-block: clamp(40px, 8vw, 84px) clamp(36px, 6vw, 64px); display: grid; gap: 28px; justify-items: start; }
-.hero-tag { color: var(--ice); font-weight: 600; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; }
-.hero h1 { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: clamp(22px, 3.2vw, 32px); line-height: 1.25; max-width: 30ch; text-wrap: balance; }
-.hero p { margin: 0; color: var(--muted); max-width: 58ch; font-size: 17px; }
-.cta { display: flex; gap: 12px; flex-wrap: wrap; }
-.btn {
-  display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
-  font-weight: 700; font-size: 15px; padding: 12px 20px; border-radius: 12px; border: 1px solid transparent;
-}
-.btn.primary { background: var(--plate); color: var(--ink); }
-.btn.primary:hover { background: #fff; }
-.btn.ghost { border-color: var(--line); color: var(--fg); }
-.btn.ghost:hover { background: var(--surface-2); }
-
-.snow { position: absolute; inset: 0; pointer-events: none; }
-.snow i {
-  position: absolute; top: -10px; width: 4px; height: 4px; border-radius: 50%;
-  background: rgba(225, 240, 255, 0.55);
-  animation: fall linear infinite;
-}
-@keyframes fall { to { transform: translateY(var(--fall, 520px)); opacity: 0; } }
-@media (prefers-reduced-motion: reduce) { .snow { display: none; } }
-
-/* ---------- секции ---------- */
-section { padding-block: clamp(44px, 7vw, 72px); }
-.eyebrow { color: var(--muted); font-weight: 600; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; margin: 0 0 10px; }
-h2 { font-family: var(--font-display); font-weight: 600; font-size: clamp(22px, 3vw, 30px); line-height: 1.2; margin: 0 0 12px; text-wrap: balance; }
-.lead { color: var(--muted); max-width: 62ch; margin: 0; }
-
-/* редкости */
-.rarity-list { margin-top: 28px; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
-.rarity {
-  display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 16px;
-  padding: 14px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
-}
-.rarity .plate { font-size: 30px; }
-.rarity .meta { min-width: 0; display: grid; gap: 2px; justify-items: end; text-align: right; }
-.rarity .name { font-weight: 700; color: var(--rar); }
-.rarity .chance { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 14px; }
-.note { color: var(--muted); font-size: 14px; margin-top: 14px; }
-
-/* что есть в игре */
-.features { margin-top: 28px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
-.feature { padding: 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; display: grid; gap: 8px; align-content: start; }
-.feature h3 { margin: 0; font-size: 17px; font-weight: 700; }
-.feature p { margin: 0; color: var(--muted); font-size: 15px; }
-.feature .fact { font-family: var(--font-plate); font-weight: 700; font-size: 26px; color: var(--plate); letter-spacing: 0.01em; }
-.feature .fact small { font-family: var(--font-body); font-size: 13px; font-weight: 500; color: var(--muted); margin-left: 4px; }
-
-/* правила */
-.rules-grid { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 40px; align-items: start; margin-top: 28px; }
-.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 76px); display: grid; gap: 2px; }
-.toc a { text-decoration: none; color: var(--muted); font-size: 14px; padding: 6px 10px; border-radius: 8px; border-left: 2px solid transparent; }
-.toc a:hover { color: var(--fg); background: var(--surface); }
-.toc a.on { color: var(--fg); border-left-color: var(--plate); background: var(--surface); }
-
-.summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-bottom: 36px; }
-.box { padding: 18px 18px 16px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); }
-.box h3 { margin: 0 0 10px; font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
-.box h3 .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
-.box ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 15px; display: grid; gap: 4px; }
-.box.ok { --c: var(--ok); }
-.box.no { --c: var(--bad); }
-
-.rule { padding-block: 22px; border-top: 1px solid var(--line); }
-.rule:first-of-type { border-top: none; padding-top: 0; }
-.rule h3 { margin: 0 0 12px; font-family: var(--font-display); font-weight: 600; font-size: 19px; display: flex; align-items: baseline; gap: 12px; }
-.rule h3 .n { font-family: var(--font-plate); font-weight: 700; font-size: 15px; color: var(--ink); background: var(--plate); border-radius: 6px; padding: 2px 7px; }
-.rule ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; max-width: 68ch; }
-.rule li { display: grid; grid-template-columns: 2.6em minmax(0, 1fr); gap: 6px; }
-.rule li > span:first-child { color: var(--muted); font-variant-numeric: tabular-nums; font-size: 14px; padding-top: 2px; }
-.rule li ul { margin: 6px 0 0; padding-left: 18px; color: var(--muted); display: grid; gap: 2px; }
-.allow { display: inline-block; font-size: 12px; font-weight: 700; color: var(--ok); border: 1px solid color-mix(in srgb, var(--ok) 50%, transparent); border-radius: 999px; padding: 1px 8px; margin-left: 6px; vertical-align: 2px; }
-.risk {
-  margin: 4px 0 2px; padding: 14px 16px; border-radius: 12px; background: var(--surface);
-  border: 1px solid color-mix(in srgb, var(--coin) 45%, var(--line)); max-width: 68ch;
-}
-.risk b { color: var(--coin); }
-
-/* наказания */
-.table-wrap { overflow-x: auto; margin-top: 24px; border: 1px solid var(--line); border-radius: 14px; }
-table { width: 100%; border-collapse: collapse; min-width: 520px; }
-th, td { text-align: left; padding: 14px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
-th { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 600; background: var(--surface); }
-tr:last-child td { border-bottom: none; }
-td:first-child { font-weight: 600; width: 46%; }
-.sev { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 10px; background: var(--c); vertical-align: 0; }
-
-footer { border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
-footer .wrap { padding-block: 28px 40px; display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; }
-
-@media (max-width: 820px) {
-  .rules-grid { grid-template-columns: minmax(0, 1fr); gap: 20px; }
-  .toc { position: static; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
-  .toc a { border-left: none; background: var(--surface); }
-  .nav-links a { padding: 6px 8px; font-size: 13px; }
-}
-@media (max-width: 480px) {
-  .nav .plate, .nav-logo { display: none; }
-  .nav-links { margin-left: 0; }
-  .rarity .plate { font-size: 24px; }
-}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 </style>
-</head><body>
 
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><b>ПОДОЛЬСК</b>ROLEPLAY</div>
+    <h1>Правила сервера</h1>
+    <p class="intro">Подольск RP — ролевой сервер. Ты играешь роль жителя города и ведёшь себя так, как вёл бы себя этот человек в реальной жизни. Заходя на сервер, ты соглашаешься с правилами. Незнание правил не освобождает от ответственности.</p>
+    <div class="meta"><span class="tag">Обновлены 28.11.2026</span><span class="tag">Также в игре: Настройки → Правила</span></div>
+  </header>
 
-<nav class="nav" aria-label="Разделы">
-  <div class="wrap">
-    <a href="#top" class="nav-logo" aria-label="Наверх" style="text-decoration:none">
-      <span class="plate" style="font-size:20px"><span class="num" style="font-family:var(--font-display);font-weight:800;font-size:.7em;align-items:center">НОМЕРА</span><span class="reg"><span class="flag"><i></i><i></i><i></i></span></span></span>
-    </a>
-    <div class="nav-links">
-      <a href="#about">Об игре</a>
-      <a href="#rarity">Редкости</a>
-      <a href="#rules">Правила</a>
-      <a href="#punish">Наказания</a>
+  <nav class="chips" aria-label="Разделы">
+    <div class="chiprow" id="chiprow">
+      <a class="chip" href="#terms">Термины</a>
+      <a class="chip" href="#general">1. Общие</a>
+      <a class="chip" href="#chat">2. Чат</a>
+      <a class="chip" href="#cars">3. Транспорт</a>
+      <a class="chip" href="#gov">4. Госструктуры</a>
+      <a class="chip" href="#opg">5. ОПГ</a>
+      <a class="chip" href="#death">6. Смерть и тюрьма</a>
+      <a class="chip" href="#admin">7. Администрация</a>
     </div>
-  </div>
-</nav>
+    <input class="search" id="q" type="search" placeholder="Поиск по правилам: DM, наручники, /bc…" autocomplete="off">
+  </nav>
 
-<header class="hero" id="top">
-  <div class="snow" aria-hidden="true" id="snow"></div>
-  <div class="wrap">
-    <span class="hero-tag">Игра в Roblox</span>
-    <span class="plate logo" role="img" aria-label="НОМЕРА RUS">
-      <span class="num">НОМЕРА</span>
-      <span class="reg"><span class="rus">RUS<span class="flag"><i></i><i></i><i></i></span></span></span>
-    </span>
-    <h1>Крути номера, собирай редкие, продавай на рынке и меняйся с игроками</h1>
-    <p>Выбивай российские, дипломатические, военные, украинские, белорусские и калифорнийские номера, собирай машины в автосалоне и ставь на них свои номера. Ниже — что есть в игре и правила для всех игроков.</p>
-    <div class="cta">
-      <a class="btn primary" href="https://www.roblox.com/games/83531579542191" target="_blank" rel="noopener">Играть в Roblox</a>
-      <a class="btn ghost" href="#rules">Читать правила</a>
-    </div>
-  </div>
-</header>
-
-<main>
-  <section id="about">
-    <div class="wrap">
-      <p class="eyebrow">Об игре</p>
-      <h2>Что тебя ждёт</h2>
-      <p class="lead">Всё строится вокруг номеров: крутишь, оцениваешь комбинацию, решаешь — оставить, продать боту, выставить на рынок или обменять.</p>
-      <div class="features">
-        <div class="feature">
-          <span class="fact">6<small>редкостей номеров</small></span>
-          <h3>Номера</h3>
-          <p>Гражданские, дипломатические, МВД, военные, Украина, Беларусь и Калифорния. Цена зависит от редкости, региона и красоты комбинации.</p>
-        </div>
-        <div class="feature">
-          <span class="fact">9<small>машин</small></span>
-          <h3>Автомобили</h3>
-          <p>От Lada Vesta до Lamborghini Huracán. Крути машины или покупай в автосалоне, крась, ставь подвеску, тонировку и свои номера.</p>
-        </div>
-        <div class="feature">
-          <span class="fact">5%<small>комиссия рынка</small></span>
-          <h3>Рынок и трейды</h3>
-          <p>Выставляй номера и машины на общий рынок для всех серверов или меняйся с игроками напрямую.</p>
-        </div>
-        <div class="feature">
-          <span class="fact">25<small>круток в дуэли</small></span>
-          <h3>Мини-игры и дуэли</h3>
-          <p>Вызови игрока на дуэль: у кого номера дороже, тот забирает всё. Плюс птичка, апгрейдер и контракты.</p>
-        </div>
-      </div>
+  <main style="display:grid;gap:28px">
+  <section id="terms" class="terms">
+    <h2>Термины</h2>
+    <div class="panel">
+      <div class="rule"><div class="num">RP</div><div class="txt">Role Play — отыгрыш роли. Всё, что делает персонаж, должно быть логичным для реальной жизни.</div></div>
+      <div class="rule"><div class="num">NonRP</div><div class="txt">Действия, невозможные или нелогичные в реальной жизни: прыжки по крышам машин, езда на машине по лестницам, бег с ранением без отыгрыша.</div></div>
+      <div class="rule"><div class="num">DM</div><div class="txt">DeathMatch — убийство или нанесение урона без RP-причины.</div></div>
+      <div class="rule"><div class="num">RDM</div><div class="txt">Random DeathMatch — массовое или случайное убийство игроков без причины.</div></div>
+      <div class="rule"><div class="num">VDM</div><div class="txt">Vehicle DeathMatch — намеренный наезд машиной на игроков без RP-причины.</div></div>
+      <div class="rule"><div class="num">MG</div><div class="txt">MetaGaming — использование в игре информации, полученной вне RP: из OOC-чата, Discord, трансляции, от друга в голосовом чате.</div></div>
+      <div class="rule"><div class="num">PG</div><div class="txt">PowerGaming — отыгрыш нереальных возможностей персонажа или действий, не оставляющих другому игроку шанса ответить (/me убил всех одним ударом).</div></div>
+      <div class="rule"><div class="num">FearRP</div><div class="txt">Страх за жизнь персонажа. Под прицелом оружия персонаж выполняет требования, а не нападает голыми руками на вооружённых.</div></div>
+      <div class="rule"><div class="num">RK</div><div class="txt">Revenge Kill — месть убийце после смерти. После гибели персонаж не помнит обстоятельств своей смерти.</div></div>
+      <div class="rule"><div class="num">SK</div><div class="txt">Spawn Kill — убийство или нападение на игрока на месте его появления.</div></div>
+      <div class="rule"><div class="num">TK</div><div class="txt">Team Kill — нападение на членов своей фракции без RP-причины.</div></div>
+      <div class="rule"><div class="num">OOC / IC</div><div class="txt">OOC — всё вне игры (реальная жизнь, обсуждение механик). IC — всё, что происходит с персонажем в игре.</div></div>
+      <div class="rule"><div class="num">Зелёная зона</div><div class="txt">Место, где запрещены нападения, грабежи и стрельба: точки появления, больница, правительство, полицейский участок внутри здания.</div></div>
     </div>
   </section>
 
-  <section id="rarity" style="background:var(--surface-2);border-block:1px solid var(--line)">
-    <div class="wrap">
-      <p class="eyebrow">Редкости</p>
-      <h2>Шанс выбить номер</h2>
-      <p class="lead">Базовый шанс одной гражданской крутки. Удача, VIP и бусты его повышают.</p>
-      <div class="rarity-list">
-        <div class="rarity" style="--rar:var(--r-common)">
-          <span class="plate" style="--rar:var(--r-common)"><span class="num"><span class="l">А</span><span class="d">123</span><span class="l">ВС</span></span><span class="reg"><b>77</b><span class="rus">RUS<span class="flag"><i></i><i></i><i></i></span></span></span></span>
-          <span class="meta"><span class="name">Обычный</span><span class="chance">≈ 70%</span></span>
-        </div>
-        <div class="rarity" style="--rar:var(--r-uncommon)">
-          <span class="plate" style="--rar:var(--r-uncommon)"><span class="num"><span class="l">К</span><span class="d">345</span><span class="l">МР</span></span><span class="reg"><b>50</b><span class="rus">RUS<span class="flag"><i></i><i></i><i></i></span></span></span></span>
-          <span class="meta"><span class="name">Необычный</span><span class="chance">≈ 20%</span></span>
-        </div>
-        <div class="rarity" style="--rar:var(--r-rare)">
-          <span class="plate" style="--rar:var(--r-rare)"><span class="num"><span class="l">Х</span><span class="d">666</span><span class="l">ХХ</span></span><span class="reg"><b>50</b><span class="rus">RUS<span class="flag"><i></i><i></i><i></i></span></span></span></span>
-          <span class="meta"><span class="name">Редкий</span><span class="chance">≈ 8%</span></span>
-        </div>
-        <div class="rarity" style="--rar:var(--r-epic)">
-          <span class="plate" style="--rar:var(--r-epic)"><span class="num"><span class="l">Р</span><span class="d">555</span><span class="l">ХО</span></span><span class="reg"><b>199</b><span class="rus">RUS<span class="flag"><i></i><i></i><i></i></span></span></span></span>
-          <span class="meta"><span class="name">Эпический</span><span class="chance">≈ 1,8%</span></span>
-        </div>
-        <div class="rarity" style="--rar:var(--r-legend)">
-          <span class="plate" style="--rar:var(--r-legend)"><span class="num"><span class="l">В</span><span class="d">007</span><span class="l">ВВ</span></span><span class="reg"><b>97</b><span class="rus">RUS<span class="flag"><i></i><i></i><i></i></span></span></span></span>
-          <span class="meta"><span class="name">Легендарный</span><span class="chance">≈ 0,2%</span></span>
-        </div>
-        <div class="rarity" style="--rar:var(--r-mythic)">
-          <span class="plate mythic"><span class="num"><span class="l">В</span><span class="d">777</span><span class="l">ОР</span></span><span class="reg"><b>777</b><span class="rus">RUS<span class="flag"><i></i><i></i><i></i></span></span></span></span>
-          <span class="meta"><span class="name">Мифический</span><span class="chance">≈ 0,01%</span></span>
-        </div>
-      </div>
-      <p class="note">Мифических номеров всего пять на всю игру: В777ОР 777, Х777АМ 777, Х777ЕР 777, А777МР 777 и К067ЕК 67. Каждый можно выбить только один раз на всех серверах.</p>
+  <section id="general">
+    <h2>1. Общие правила</h2>
+    <div class="panel">
+      <div class="rule"><div class="num">1.1</div><div class="txt">Запрещён любой NonRP: действия, невозможные в реальной жизни, игнорирование отыгрыша ранения, задержания или аварии.</div><div class="pun">Пред / КПЗ 15–30 мин</div></div>
+      <div class="rule"><div class="num">1.2</div><div class="txt">Запрещён DM — убийство или нанесение урона без RP-причины. Конфликт сначала отыгрывается словами.</div><div class="pun">КПЗ 30–60 мин</div></div>
+      <div class="rule"><div class="num">1.3</div><div class="txt">Запрещён RDM — массовые убийства без причины.</div><div class="pun">Бан 3–7 дней</div></div>
+      <div class="rule"><div class="num">1.4</div><div class="txt">Запрещён VDM — намеренный наезд машиной на игроков.</div><div class="pun">КПЗ 30–60 мин</div></div>
+      <div class="rule"><div class="num">1.5</div><div class="txt">Запрещён MetaGaming. Информацию из OOC, Discord и трансляций нельзя использовать в игре.</div><div class="pun">КПЗ 20–40 мин</div></div>
+      <div class="rule"><div class="num">1.6</div><div class="txt">Запрещён PowerGaming.</div><div class="pun">Пред / КПЗ 20 мин</div></div>
+      <div class="rule"><div class="num">1.7</div><div class="txt">Соблюдай FearRP: под прицелом оружия выполняй требования. Нападать с кулаками на вооружённую группу запрещено.</div><div class="pun">КПЗ 20–40 мин</div></div>
+      <div class="rule"><div class="num">1.8</div><div class="txt">Запрещён Revenge Kill. После смерти персонаж забывает, что произошло, и не возвращается на место гибели в течение 10 минут.</div><div class="pun">КПЗ 30 мин</div></div>
+      <div class="rule"><div class="num">1.9</div><div class="txt">Запрещены Spawn Kill, нападения и грабёж в зелёных зонах.</div><div class="pun">КПЗ 30–60 мин</div></div>
+      <div class="rule"><div class="num">1.10</div><div class="txt">Запрещено уходить от RP-ситуации: выход из игры, смена команды или телепорт во время задержания, погони, ограбления или перестрелки.</div><div class="pun">Бан 1–3 дня</div></div>
+      <div class="rule"><div class="num">1.11</div><div class="txt">Запрещено использовать баги, читы, макросы и сторонние программы, дающие преимущество. Найденный баг сообщи администрации.</div><div class="pun">Бан 7 дней — навсегда</div></div>
+      <div class="rule"><div class="num">1.12</div><div class="txt">Запрещён обман на реальные деньги, продажа игровой валюты, машин и аккаунтов за реальные деньги.</div><div class="pun">Бан навсегда</div></div>
+      <div class="rule"><div class="num">1.13</div><div class="txt">Запрещён обман администрации, ложные жалобы и выдача себя за администратора.</div><div class="pun">Бан 3–7 дней</div></div>
+      <div class="rule"><div class="num">1.14</div><div class="txt">Никнейм персонажа не должен содержать мат, оскорбления и рекламу.</div><div class="pun">Кик / Бан до смены ника</div></div>
+      <div class="rule"><div class="num">1.15</div><div class="txt">Промокоды выдаются только администрацией. Перепродавать или раздавать их от имени администрации запрещено.</div><div class="pun">Бан 3 дня</div></div>
     </div>
   </section>
 
-  <section id="rules">
-    <div class="wrap">
-      <p class="eyebrow">Правила</p>
-      <h2>Правила игры</h2>
-      <p class="lead">Играя, ты соглашаешься с этими правилами и с <a href="https://en.help.roblox.com/hc/articles/203313410" target="_blank" rel="noopener">Правилами сообщества Roblox</a>. Незнание правил не освобождает от наказания.</p>
-
-      <div class="rules-grid">
-        <aside class="toc" aria-label="Разделы правил" id="toc">
-          <a href="#r1">1. Общение</a>
-          <a href="#r2">2. Трейды и рынок</a>
-          <a href="#r3">3. Дуэли и мини-игры</a>
-          <a href="#r4">4. Честная игра</a>
-          <a href="#r5">5. Редкие номера</a>
-          <a href="#r6">6. Аккаунт</a>
-          <a href="#punish">7. Наказания</a>
-          <a href="#r8">8. Администрация</a>
-        </aside>
-
-        <div>
-          <div class="summary">
-            <div class="box ok">
-              <h3><span class="dot"></span>Можно</h3>
-              <ul>
-                <li>Пользоваться автокликером</li>
-                <li>Торговаться и меняться как хочешь — сделки на твой риск</li>
-                <li>Сообщать о багах и получать за это награду</li>
-              </ul>
-            </div>
-            <div class="box no">
-              <h3><span class="dot"></span>Нельзя</h3>
-              <ul>
-                <li>Читы, эксплойты и использование багов</li>
-                <li>Продажа номеров, машин и аккаунтов за реальные деньги</li>
-                <li>Оскорбления, спам и выдача себя за админа</li>
-              </ul>
-            </div>
-          </div>
-
-          <article class="rule" id="r1">
-            <h3><span class="n">1</span>Общение</h3>
-            <ol>
-              <li><span>1.1</span><span>Уважай других игроков. Оскорбления, травля, угрозы и дискриминация запрещены.</span></li>
-              <li><span>1.2</span><span>Нельзя спамить и флудить в чате, в личных сообщениях и в приглашениях на трейд или дуэль.</span></li>
-              <li><span>1.3</span><span>Нельзя рекламировать другие игры, сайты, Discord-серверы и сторонние магазины.</span></li>
-              <li><span>1.4</span><span>Нельзя выдавать себя за администратора, разработчика или модератора.</span></li>
-              <li><span>1.5</span><span>Нельзя просить и публиковать чужие личные данные, пароли и коды.</span></li>
-            </ol>
-          </article>
-
-          <article class="rule" id="r2">
-            <h3><span class="n">2</span>Трейды и рынок</h3>
-            <ol>
-              <li><span>2.1</span><div><div class="risk"><b>Каждый трейд — на твой страх и риск.</b> Администрация не вмешивается в сделки между игроками, не возвращает отданные номера, машины и монеты и не наказывает за невыгодный или нечестный обмен.</div></div></li>
-              <li><span>2.2</span><span>Устные договорённости ничего не гарантируют. Учитывается только то, что прошло через окно трейда или рынок. Перед подтверждением всегда проверяй, что именно ты отдаёшь и получаешь.</span></li>
-              <li><span>2.3</span><span>Нельзя продавать и покупать номера, машины, монеты и аккаунты за реальные деньги, Robux вне игры или другие ценности.</span></li>
-              <li><span>2.4</span><span>Сделки, которые прошли через рынок или трейд, не отменяются. Исключение — ошибка самой игры.</span></li>
-            </ol>
-          </article>
-
-          <article class="rule" id="r3">
-            <h3><span class="n">3</span>Дуэли и мини-игры</h3>
-            <ol>
-              <li><span>3.1</span><span>Нельзя договариваться о подставных дуэлях ради передачи номеров в обход трейда.</span></li>
-              <li><span>3.2</span><span>Автокликер разрешён.<span class="allow">можно</span></span></li>
-            </ol>
-          </article>
-
-          <article class="rule" id="r4">
-            <h3><span class="n">4</span>Честная игра</h3>
-            <ol>
-              <li><span>4.1</span><span>Запрещены читы, эксплойты, сторонние программы, которые меняют клиент игры, и любое вмешательство в работу игры. Автокликер к ним не относится.</span></li>
-              <li><span>4.2</span><div>Нашёл баг — сообщи администрации и не пользуйся им. Например:
-                <ul><li>дублирование номеров;</li><li>бесплатные крутки;</li><li>лишние монеты.</li></ul>
-                Тот, кто пользуется багом, получает наказание. Тот, кто о нём сообщил, может получить награду.</div></li>
-              <li><span>4.3</span><span>Нельзя использовать твинк-аккаунты, чтобы фармить награды, промокоды, ежедневные бонусы или передавать ценности на основной аккаунт.</span></li>
-              <li><span>4.4</span><span>Промокод можно активировать только на одном своём аккаунте. Нельзя продавать промокоды и раздавать их вне официальных каналов.</span></li>
-            </ol>
-          </article>
-
-          <article class="rule" id="r5">
-            <h3><span class="n">5</span>Редкие и мифические номера</h3>
-            <ol>
-              <li><span>5.1</span><span>Мифических номеров в игре всего пять, и каждый существует в одном экземпляре.</span></li>
-              <li><span>5.2</span><span>Номер, полученный через баг, изымается без компенсации.</span></li>
-            </ol>
-          </article>
-
-          <article class="rule" id="r6">
-            <h3><span class="n">6</span>Аккаунт</h3>
-            <ol>
-              <li><span>6.1</span><span>За безопасность аккаунта отвечаешь ты сам. Номера, машины и монеты, потерянные после взлома или передачи аккаунта, не восстанавливаются.</span></li>
-              <li><span>6.2</span><span>Никому не сообщай пароль и коды подтверждения. Администрация никогда их не спрашивает.</span></li>
-            </ol>
-          </article>
-
-          <article class="rule" id="punish">
-            <h3><span class="n">7</span>Наказания</h3>
-            <p class="lead" style="font-size:15px">Наказание выбирается по тяжести нарушения. При повторных нарушениях оно строже.</p>
-            <div class="table-wrap">
-              <table>
-                <thead><tr><th>Нарушение</th><th>Наказание</th></tr></thead>
-                <tbody>
-                  <tr><td><span class="sev" style="--c:var(--r-legend)"></span>Спам, лёгкие оскорбления</td><td>Предупреждение, затем мут в чате</td></tr>
-                  <tr><td><span class="sev" style="--c:var(--r-legend)"></span>Реклама, выдача себя за админа</td><td>Мут или временный бан</td></tr>
-                  <tr><td><span class="sev" style="--c:var(--bad)"></span>Травля, угрозы, публикация чужих личных данных</td><td>Временный или вечный бан</td></tr>
-                  <tr><td><span class="sev" style="--c:var(--bad)"></span>Использование бага</td><td>Изъятие нажитого через баг, временный или вечный бан</td></tr>
-                  <tr><td><span class="sev" style="--c:var(--bad)"></span>Твинки, злоупотребление промокодами, подставные дуэли</td><td>Изъятие полученного, временный или вечный бан</td></tr>
-                  <tr><td><span class="sev" style="--c:var(--bad)"></span>Читы, эксплойты, продажа за реальные деньги</td><td>Вечный бан и обнуление прогресса</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </article>
-
-          <article class="rule" id="r8">
-            <h3><span class="n">8</span>Администрация</h3>
-            <ol>
-              <li><span>8.1</span><span>Администрация может изменять правила, цены, шансы выпадения и баланс игры. Изменения действуют с момента публикации.</span></li>
-              <li><span>8.2</span><span>Решения администрации обязательны. Оспорить наказание можно, если спокойно и с доказательствами (скриншоты, видео) написать в официальную группу игры.</span></li>
-              <li><span>8.3</span><span>Ситуации, не описанные в правилах, администрация решает сама, исходя из честной игры.</span></li>
-            </ol>
-          </article>
-        </div>
-      </div>
+  <section id="chat">
+    <h2>2. Чат и общение</h2>
+    <div class="panel">
+      <div class="rule"><div class="num">2.1</div><div class="txt">Обычный чат — это речь персонажа. Говори как персонаж, без OOC-тем. Вне игры — только через /b или //.</div><div class="pun">Пред / Мут 15 мин</div></div>
+      <div class="rule"><div class="num">2.2</div><div class="txt">/me — действие персонажа, /do — описание окружения или результат действия, /todo — фраза*действие, /try — попытка со случайным исходом. Отыгрыши не должны быть PowerGaming.</div><div class="pun">Пред</div></div>
+      <div class="rule"><div class="num">2.3</div><div class="txt">Результат /try нельзя переигрывать много раз подряд, пока не выпадет «Удачно».</div><div class="pun">Пред / КПЗ 15 мин</div></div>
+      <div class="rule"><div class="num">2.4</div><div class="txt">Крик слышно далеко, шёпот — только рядом. Используй их по смыслу ситуации.</div></div>
+      <div class="rule"><div class="num">2.5</div><div class="txt">/bc — объявление на весь сервер (раз в 2 минуты). Только для RP-объявлений: продажа, услуги, набор во фракцию. Флуд, оскорбления и реклама запрещены.</div><div class="pun">Мут 30–60 мин</div></div>
+      <div class="rule"><div class="num">2.6</div><div class="txt">Запрещены оскорбления игроков и их родных в OOC, разжигание ненависти, обсуждение политики и религии.</div><div class="pun">Мут 60 мин / Бан 1–3 дня</div></div>
+      <div class="rule"><div class="num">2.7</div><div class="txt">Запрещены флуд, капс, спам одинаковыми сообщениями.</div><div class="pun">Мут 15–30 мин</div></div>
+      <div class="rule"><div class="num">2.8</div><div class="txt">Запрещена реклама других игр, серверов и сообществ.</div><div class="pun">Бан 7 дней</div></div>
+      <div class="rule"><div class="num">2.9</div><div class="txt">Оскорбления персонажей в IC допустимы в рамках отыгрыша, но без перехода на реальную личность игрока.</div></div>
     </div>
   </section>
-</main>
 
-<footer>
-  <div class="wrap">
-    <span>НОМЕРА · игра в Roblox</span>
-    <span>Правила обновлены 24 ноября 2026</span>
+  <section id="cars">
+    <h2>3. Транспорт</h2>
+    <div class="panel">
+      <div class="rule"><div class="num">3.1</div><div class="txt">Езди по правилам дорожного движения, если у персонажа нет RP-причины их нарушить (погоня, срочный вызов).</div></div>
+      <div class="rule"><div class="num">3.2</div><div class="txt">Запрещено ездить там, где машина не проедет в реальности: по лестницам, крышам, через здания.</div><div class="pun">Пред / КПЗ 15 мин</div></div>
+      <div class="rule"><div class="num">3.3</div><div class="txt">После серьёзной аварии отыграй травмы и повреждения (/me, /do), а не уезжай сразу.</div><div class="pun">Пред</div></div>
+      <div class="rule"><div class="num">3.4</div><div class="txt">Запрещено спавнить машины, чтобы перекрыть дорогу, сбить игрока или застрять в здании.</div><div class="pun">КПЗ 20 мин</div></div>
+      <div class="rule"><div class="num">3.5</div><div class="txt">Чужую машину можно угнать только в рамках RP и с отыгрышем (/me взломал замок, /try).</div><div class="pun">КПЗ 20 мин</div></div>
+      <div class="rule"><div class="num">3.6</div><div class="txt">Нельзя бросать машину посреди дороги без причины.</div><div class="pun">Пред</div></div>
+      <div class="rule"><div class="num">3.7</div><div class="txt">Спецсигналы (СГУ, мигалки, сирена) включаются только на служебных машинах и только при выполнении задачи. Сирена ради шутки запрещена.</div><div class="pun">Пред / Увал</div></div>
+    </div>
+  </section>
+
+  <section id="gov">
+    <h2>4. Государственные структуры <small>Полиция, ФСБ, МЧС, СМП, Правительство</small></h2>
+    <div class="panel">
+      <div class="rule"><div class="num">4.1</div><div class="txt">Сотрудник обязан носить форму и действовать по своей должности. На работе запрещено вести себя как гражданский бандит.</div><div class="pun">Пред / Увал</div></div>
+      <div class="rule"><div class="num">4.2</div><div class="txt">Служебное оружие, машины и КПК используются только для работы. Передавать их гражданским и ОПГ запрещено.</div><div class="pun">Увал + КПЗ 30 мин</div></div>
+      <div class="rule"><div class="num">4.3</div><div class="txt">Полиция и ФСБ задерживают только при наличии причины. Перед задержанием сотрудник представляется и называет причину.</div><div class="pun">Пред / Увал</div></div>
+      <div class="rule"><div class="num">4.4</div><div class="txt">Наручники надеваются после требования остановиться или после того, как человек перестал сопротивляться. Надевать наручники на бегу без отыгрыша — PowerGaming.</div><div class="pun">Пред</div></div>
+      <div class="rule"><div class="num">4.5</div><div class="txt">Оружие на поражение применяется только против вооружённых или при прямой угрозе жизни. Сначала — требование, дубинка, перцовый баллончик.</div><div class="pun">КПЗ 30 мин / Увал</div></div>
+      <div class="rule"><div class="num">4.6</div><div class="txt">Штраф выписывается только за реальное нарушение и в разумном размере.</div><div class="pun">Пред / Увал</div></div>
+      <div class="rule"><div class="num">4.7</div><div class="txt">Задержанный имеет право знать причину. Удерживать человека в наручниках без дела дольше 10 минут запрещено.</div><div class="pun">Пред</div></div>
+      <div class="rule"><div class="num">4.8</div><div class="txt">Взятки, крышевание ОПГ и слив информации — только в рамках RP и на свой риск: если поймают, персонаж теряет должность.</div></div>
+      <div class="rule"><div class="num">4.9</div><div class="txt">МЧС и СМП нейтральны: на них нельзя нападать во время вызова, а сами они не участвуют в перестрелках.</div><div class="pun">КПЗ 30 мин</div></div>
+      <div class="rule"><div class="num">4.10</div><div class="txt">Правительство не может издавать законы, противоречащие правилам сервера.</div></div>
+      <div class="rule"><div class="num">4.11</div><div class="txt">Запрещено вступать в госструктуру, чтобы слить информацию своей ОПГ (твинк-шпионаж в OOC).</div><div class="pun">Увал + Бан 1 день</div></div>
+    </div>
+  </section>
+
+  <section id="opg">
+    <h2>5. ОПГ <small>ОПГ Кошки, ОПГ Ястреб</small></h2>
+    <div class="panel">
+      <div class="rule"><div class="num">5.1</div><div class="txt">Криминальные действия (ограбления, похищения, нападения) должны иметь RP-причину и отыгрываться, а не начинаться со стрельбы.</div><div class="pun">КПЗ 30 мин</div></div>
+      <div class="rule"><div class="num">5.2</div><div class="txt">Ограбление: не больше 4 нападающих на одного игрока; можно отнять деньги, но не машины из гаража и не служебное имущество.</div><div class="pun">КПЗ 30–60 мин</div></div>
+      <div class="rule"><div class="num">5.3</div><div class="txt">Похищение длится не дольше 20 минут. Требования к выкупу должны быть разумными.</div><div class="pun">КПЗ 30 мин</div></div>
+      <div class="rule"><div class="num">5.4</div><div class="txt">Нападать на сотрудников госструктур можно только при серьёзной RP-причине (освобождение своих, сорванная сделка). Охота на полицию ради убийств запрещена.</div><div class="pun">КПЗ 60 мин / Бан 1 день</div></div>
+      <div class="rule"><div class="num">5.5</div><div class="txt">Война ОПГ объявляется лидерами и согласуется с администрацией. Без объявления — только локальные конфликты с причиной.</div><div class="pun">КПЗ 60 мин</div></div>
+      <div class="rule"><div class="num">5.6</div><div class="txt">Запрещено нападать на членов своей ОПГ (TK) и на союзные ОПГ без причины.</div><div class="pun">КПЗ 30 мин / Увал</div></div>
+      <div class="rule"><div class="num">5.7</div><div class="txt">Запрещено объединяться обеим ОПГ против госструктур ради массовых перестрелок.</div><div class="pun">Бан 1–3 дня</div></div>
+      <div class="rule"><div class="num">5.8</div><div class="txt">Носить оружие открыто в зелёной зоне и около полицейского участка запрещено.</div><div class="pun">Пред</div></div>
+    </div>
+  </section>
+
+  <section id="death">
+    <h2>6. Смерть, ранения и тюрьма</h2>
+    <div class="panel">
+      <div class="rule"><div class="num">6.1</div><div class="txt">После смерти персонаж забывает события, которые к ней привели (см. RK).</div><div class="pun">КПЗ 30 мин</div></div>
+      <div class="rule"><div class="num">6.2</div><div class="txt">Ранение нужно отыгрывать: персонаж не бегает и не стреляет как здоровый.</div><div class="pun">Пред</div></div>
+      <div class="rule"><div class="num">6.3</div><div class="txt">Срок КПЗ и тюрьмы нужно отсидеть полностью. Выход из игры не сбрасывает срок — он продолжится при следующем заходе.</div></div>
+      <div class="rule"><div class="num">6.4</div><div class="txt">Побег из КПЗ возможен только в рамках RP. Из тюрьмы администрации («Посажен») сбегать запрещено.</div><div class="pun">Бан 1 день</div></div>
+    </div>
+  </section>
+
+  <section id="admin">
+    <h2>7. Администрация и наказания</h2>
+    <div class="panel">
+      <div class="rule"><div class="num">7.1</div><div class="txt">Администрация: Хелпер, Модератор, Администратор, Разработчик, Владелец. Слово администрации в игре — окончательное; не согласен — пиши жалобу в Discord, а не спорь в чате.</div></div>
+      <div class="rule"><div class="num">7.2</div><div class="txt">Предупреждение (пред) выдаётся за мелкие нарушения. 3 преда — автоматический кик с сервера.</div></div>
+      <div class="rule"><div class="num">7.3</div><div class="txt">Мут — запрет писать в чат на время. Обходить мут через другой аккаунт запрещено.</div><div class="pun">Бан 1–3 дня</div></div>
+      <div class="rule"><div class="num">7.4</div><div class="txt">КПЗ администрации — тюрьма на время, команда «Посажен». Срок сохраняется при перезаходе.</div></div>
+      <div class="rule"><div class="num">7.5</div><div class="txt">Кик — выкинуть с сервера. Бан — блокировка на срок или навсегда, причина видна при входе.</div></div>
+      <div class="rule"><div class="num">7.6</div><div class="txt">Обход бана с другого аккаунта — бан всех аккаунтов навсегда.</div><div class="pun">Бан навсегда</div></div>
+      <div class="rule"><div class="num">7.7</div><div class="txt">Все наказания объявляются в чате красным с именем администратора и причиной.</div></div>
+      <div class="rule"><div class="num">7.8</div><div class="txt">Администрация может выдать наказание за нарушение, не описанное в правилах, если оно мешает игре другим.</div></div>
+      <div class="rule"><div class="num">7.9</div><div class="txt">Администратор не может злоупотреблять командами: выдавать себе и друзьям деньги, машины, телепортироваться ради выгоды в RP.</div><div class="pun">Снятие с должности</div></div>
+    </div>
+  </section>
+  </main>
+
+  <p class="empty" id="empty" hidden>Ничего не нашлось. Попробуй другое слово.</p>
+
+  <div class="legend" aria-label="Виды наказаний">
+    <div><b>Пред</b><span>Предупреждение. Третий — автоматический кик.</span></div>
+    <div><b>Мут</b><span>Нельзя писать в чат на указанное время.</span></div>
+    <div><b>КПЗ</b><span>Тюрьма администрации, срок сохраняется при перезаходе.</span></div>
+    <div><b>Увал</b><span>Снятие с фракции.</span></div>
+    <div><b>Кик / Бан</b><span>Выкинуть с сервера / заблокировать на срок или навсегда.</span></div>
   </div>
-</footer>
+
+  <footer>Подольск RP · правила могут дополняться, актуальная версия — в игре и здесь</footer>
+</div>
 
 <script>
-// Лёгкий снег в шапке (как в самой игре); без анимации, если пользователь её отключил
 (function () {
-  var box = document.getElementById("snow");
-  if (!box || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  function setFall() { box.style.setProperty("--fall", (box.offsetHeight + 20) + "px"); }
-  setFall();
-  window.addEventListener("resize", setFall);
-  for (var i = 0; i < 36; i++) {
-    var f = document.createElement("i");
-    var s = 2 + Math.random() * 4;
-    f.style.left = (Math.random() * 100) + "%";
-    f.style.width = f.style.height = s + "px";
-    f.style.opacity = (0.25 + Math.random() * 0.5).toFixed(2);
-    f.style.animationDuration = (7 + Math.random() * 9) + "s";
-    f.style.animationDelay = (-Math.random() * 14) + "s";
-    box.appendChild(f);
-  }
-})();
-
-// Подсветка текущего раздела в оглавлении правил
-(function () {
-  var links = Array.prototype.slice.call(document.querySelectorAll("#toc a"));
-  var targets = links.map(function (a) { return document.querySelector(a.getAttribute("href")); });
-  if (!("IntersectionObserver" in window)) return;
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (!e.isIntersecting) return;
-      links.forEach(function (a, i) { a.classList.toggle("on", targets[i] === e.target); });
+  var q = document.getElementById('q');
+  var empty = document.getElementById('empty');
+  var rules = Array.prototype.slice.call(document.querySelectorAll('.rule'));
+  rules.forEach(function (r) { r._html = r.innerHTML; r._text = r.textContent.toLowerCase(); });
+  function escRe(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+  q.addEventListener('input', function () {
+    var v = q.value.trim().toLowerCase();
+    var any = false;
+    rules.forEach(function (r) {
+      var hit = !v || r._text.indexOf(v) !== -1;
+      r.hidden = !hit;
+      r.innerHTML = r._html;
+      if (hit && v) {
+        var re = new RegExp('(' + escRe(v) + ')', 'gi');
+        r.querySelectorAll('.txt, .num').forEach(function (el) { el.innerHTML = el.innerHTML.replace(re, '<mark>$1</mark>'); });
+      }
+      if (hit) any = true;
     });
-  }, { rootMargin: "-40% 0px -55% 0px" });
-  targets.forEach(function (t) { if (t) io.observe(t); });
+    document.querySelectorAll('main section').forEach(function (s) {
+      s.hidden = !s.querySelector('.rule:not([hidden])');
+    });
+    empty.hidden = any;
+  });
+  // активный раздел в навигации
+  var chips = {};
+  document.querySelectorAll('.chip').forEach(function (c) { chips[c.getAttribute('href').slice(1)] = c; });
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting) {
+          Object.keys(chips).forEach(function (k) { chips[k].classList.toggle('on', k === e.target.id); });
+          var c = chips[e.target.id];
+          if (c) c.parentNode.scrollTo({ left: c.offsetLeft - 16, behavior: 'smooth' });
+        }
+      });
+    }, { rootMargin: '-140px 0px -60% 0px' });
+    document.querySelectorAll('main section').forEach(function (s) { io.observe(s); });
+  }
 })();
 </script>
 
